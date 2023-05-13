@@ -4,7 +4,38 @@ import { Textarea } from "@/components/ui/textarea"
 export default function IndexPage() {
   async function handleSubmit(data: FormData) {
     "use server"
-    console.log(data)
+    const inputText = data.get("inputText")
+    console.log(inputText)
+
+    const prompt = inputText
+    const model = "gpt-3.5-turbo"
+    const token = "qzWOoGbUqRQhc5i0kSkfmzkdFmcRwq"
+
+    return await fetch("https://openai-api.meetings.bio/api/openai/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        model,
+        messages: [{ role: "user", content: prompt }],
+      }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Request failed")
+        }
+        return response.json()
+      })
+      .then((data) => {
+        console.log(data.choices[0].message.content)
+        return data.choices[0].message.content
+      })
+      .catch((error) => {
+        console.error(error)
+      })
+
     // ...
   }
 
