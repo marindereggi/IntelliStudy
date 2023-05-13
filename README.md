@@ -1,0 +1,2 @@
+# IntelliStudy
+GPT Flashcard Generator
