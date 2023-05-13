@@ -106,6 +106,7 @@ export default function IndexPage() {
           <a
             href={"data:text/csv;charset=utf-8," + encodeURI(getCSV())}
             target="_blank"
+            rel="noreferrer"
             download="faq.csv"
             className={buttonVariants({ size: "lg" })}
           >
