@@ -18,7 +18,7 @@ export default function IndexPage() {
       </div>
       <div className="flex gap-4">
         <Link
-          href={siteConfig.links.docs}
+          href={siteConfig.mainNav[0]}
           target="_blank"
           rel="noreferrer"
           className={buttonVariants({ size: "lg" })}
