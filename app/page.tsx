@@ -60,10 +60,17 @@ interface ABCData {
 export default function IndexPage() {
   const [response, setResponse] = useState("")
   const [loading, setLoading] = useState(false)
+  const [AbcOdgovor, setAbcOdgovor] = useState("")
 
 
   const [vrstaVprasanja, setVrstaVprasanja] = useState("Povzetek")
 
+  const HandleRadioChange = (value: string) =>{
+    console.log(value);
+
+    setAbcOdgovor(value);
+
+  }
 
   function FaqPage() {
     const resp: FaqData = JSON.parse(response)
@@ -93,23 +100,24 @@ export default function IndexPage() {
     return (
       <section className="container grid items-center gap-6 pb-8 pt-6 md:py-10">
         {resp.vprasanja.map((item, index) => (
-      <RadioGroup defaultValue="">
+      <RadioGroup defaultValue="" onValueChange={HandleRadioChange}>
 
           <div key={index}>
             <div>{item.vprasanje}</div>
             <div className="flex items-center space-x-2">
-              <RadioGroupItem value="a" id={`r${index}-a`} />
+              <RadioGroupItem value={`a${index}`} id={`r${index}-a`} />
               <Label htmlFor={`r${index}-a`}>{item.odgovor.a}</Label>
             </div>
             <div className="flex items-center space-x-2">
-              <RadioGroupItem value="b" id={`r${index}-b`} />
+              <RadioGroupItem value={`b${index}`} id={`r${index}-b`} />
               <Label htmlFor={`r${index}-b`}>{item.odgovor.b}</Label>
             </div>
             <div className="flex items-center space-x-2">
-              <RadioGroupItem value="c" id={`r${index}-c`} />
+              <RadioGroupItem value={`c${index}`} id={`r${index}-c`} />
               <Label htmlFor={`r${index}-c`}>{item.odgovor.c}</Label>
             </div>
           </div>
+          {AbcOdgovor === `${item.pravilenOdgovor}${index}` ? <div>Pravilno.</div>: <div>Narobe.</div>}
       </RadioGroup>
 
         ))}
