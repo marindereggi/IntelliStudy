@@ -111,7 +111,7 @@ export async function handleSubmitVprasanja(data: FormData) {
     ]
     } 
     
-    Seldi text:`
+    Jeson mora biti vedno v taki obliki. Ne napiši dodatnega besedila. Vrni samo JSON.`
     const model = "gpt-3.5-turbo"
     const token = "qzWOoGbUqRQhc5i0kSkfmzkdFmcRwq"
   

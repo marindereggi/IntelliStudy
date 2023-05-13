@@ -1,11 +1,11 @@
 "use client"
 
+
 import React,{ ChangeEvent, FormEvent, useState } from "react"
-import { Loader2 } from "lucide-react"
 
 
 
-import { Button } from "@/components/ui/button"
+import { Button, buttonVariants } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 
@@ -13,12 +13,17 @@ import { handleSubmitPovzetek, handleSubmitVprasanja, handleSubmitABCD } from ".
 import { Slider } from "@/components/ui/slider"
 
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { Link, Loader2 } from "lucide-react"
+
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion"
+
+
+
 
 import {
   Select,
@@ -29,23 +34,26 @@ import {
 } from "@/components/ui/select"
 
 interface FaqItem {
-  vprasanje: string;
-  odgovor: string;
+  vprasanje: string
+  odgovor: string
 }
 
 interface FaqData {
-  vprasanja: FaqItem[];
+  vprasanja: FaqItem[]
 }
-
-interface ABCItem {
+interface ABCOdg {
   a: string;
   b: string;
   c: string;
 }
+interface ABCItem {
+  vprasanje: string;
+  odgovor: ABCOdg
+  pravilenOdgovor :string;
+}
 
 interface ABCData {
-  vprasanje: string;
-  odgovor: ABCItem[]
+  vprasanja: ABCItem[];
 }
 
 
@@ -53,24 +61,24 @@ export default function IndexPage() {
   const [response, setResponse] = useState("")
   const [loading, setLoading] = useState(false)
 
+
   const [vrstaVprasanja, setVrstaVprasanja] = useState("Povzetek")
 
+
   function FaqPage() {
-    const resp: FaqData=JSON.parse(response);
+    const resp: FaqData = JSON.parse(response)
     return (
       <section className="container grid items-center gap-6 pb-8 pt-6 md:py-10">
         <Accordion type="single" collapsible>
           {resp.vprasanja.map((item, index) => (
             <AccordionItem key={index} value={`item-${index}`}>
               <AccordionTrigger>{item.vprasanje}</AccordionTrigger>
-              <AccordionContent>
-                {item.odgovor}
-              </AccordionContent>
+              <AccordionContent>{item.odgovor}</AccordionContent>
             </AccordionItem>
           ))}
         </Accordion>
       </section>
-    );
+    )
   }
   function izpisiPovzetek() {
     return (
@@ -81,28 +89,31 @@ export default function IndexPage() {
   }
   function ABCDizpis() {
     const resp: ABCData = JSON.parse(response);
+    console.log(resp);
     return (
       <section className="container grid items-center gap-6 pb-8 pt-6 md:py-10">
-        <RadioGroup defaultValue="">
-          {resp.odgovor.map((item, index) => (
-            <div key={index}>
-              <div>{resp.vprasanje}</div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="a" id={`r${index}-a`} />
-                <Label htmlFor={`r${index}-a`}>{item.a}</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="b" id={`r${index}-b`} />
-                <Label htmlFor={`r${index}-b`}>{item.b}</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="c" id={`r${index}-c`} />
-                <Label htmlFor={`r${index}-c`}>{item.c}</Label>
-              </div>
+        {resp.vprasanja.map((item, index) => (
+      <RadioGroup defaultValue="">
+
+          <div key={index}>
+            <div>{item.vprasanje}</div>
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="a" id={`r${index}-a`} />
+              <Label htmlFor={`r${index}-a`}>{item.odgovor.a}</Label>
             </div>
-          ))}
-        </RadioGroup>
-      </section>
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="b" id={`r${index}-b`} />
+              <Label htmlFor={`r${index}-b`}>{item.odgovor.b}</Label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="c" id={`r${index}-c`} />
+              <Label htmlFor={`r${index}-c`}>{item.odgovor.c}</Label>
+            </div>
+          </div>
+      </RadioGroup>
+
+        ))}
+    </section>
     );
   }
   
@@ -135,8 +146,18 @@ export default function IndexPage() {
     console.log(value);
 
     setVrstaVprasanja(value);
+    setResponse("");
     console.log(vrstaVprasanja);
 
+  }
+
+  function getCSV() {
+    const resp: FaqData = JSON.parse(response)
+    var csv = ""
+    resp.vprasanja.forEach(
+      (item, index) => (csv += `"${item.vprasanje}","${item.odgovor}"\n`)
+    )
+    return csv
   }
 
   return (
@@ -177,8 +198,10 @@ export default function IndexPage() {
             id="message-2"
           />
         </div>
-        <div className="flex gap-4 ">
-          <Button type="submit" disabled={loading}>
+
+        <div className="flex gap-4 pb-8 md:py-4">
+          <Button type="submit" disabled={loading} className={buttonVariants({ size: "lg" })}>
+
             {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             {loading ? "Loading..." : "Submit"}
           </Button>
@@ -190,7 +213,17 @@ export default function IndexPage() {
           <h2>Vprašanja in odgovori:</h2>
           <p>
           {FaqPage()}</p>
+         {/*<a
+            href={"data:text/csv;charset=utf-8," + encodeURI(getCSV())}
+            target="_blank"
+            rel="noreferrer"
+            download="faq.csv"
+            className={buttonVariants({ size: "lg" })}
+          >
+            Download CSV
+          </a> */} 
         </div>
+        
       )}
 
       {response !== "" && vrstaVprasanja=="Povzetek" && (
@@ -198,14 +231,34 @@ export default function IndexPage() {
           <h2>Povzetek:</h2>
           <p>
           {izpisiPovzetek()}</p>
+          {/*<a
+            href={"data:text/csv;charset=utf-8," + encodeURI(getCSV())}
+            target="_blank"
+            rel="noreferrer"
+            download="faq.csv"
+            className={buttonVariants({ size: "lg" })}
+          >
+            Download CSV
+          </a> */} 
         </div>
       )}
 
       {response !== "" && vrstaVprasanja=="A B C " && (
         <div>
           <h2>Response:</h2>
+
           <p>
           {ABCDizpis()}</p>
+         {/*<a
+            href={"data:text/csv;charset=utf-8," + encodeURI(getCSV())}
+            target="_blank"
+            rel="noreferrer"
+            download="faq.csv"
+            className={buttonVariants({ size: "lg" })}
+          >
+            Download CSV
+          </a> */} 
+         
         </div>
       )}
     </section>
