@@ -1,20 +1,32 @@
 "use client"
+
+import { FormEvent, useState } from "react"
+import { Loader2 } from "lucide-react"
+
 import { Button } from "@/components/ui/button"
-import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
-import { useState } from "react";
-import { handleSubmit } from "./api";
+import { Textarea } from "@/components/ui/textarea"
+
+import { handleSubmit } from "./api"
 
 export default function IndexPage() {
-  const [response, setResponse] = useState("");
+  const [response, setResponse] = useState("")
+  const [loading, setLoading] = useState(false)
 
-  async function handleFormSubmit(data: FormData) {
-    console.log("fbgvetnvethn");
-    const result = await handleSubmit(data);
+  async function handleFormSubmit(event: FormEvent<HTMLFormElement>) {
+    console.log(typeof event)
+    event.preventDefault()
+    const formData = new FormData(event.currentTarget)
+    setLoading(true)
 
-    setResponse(result);
-    console.log("aaaaaa",result);
-    console.log("bbbbbb0",response);
+    try {
+      const result = await handleSubmit(formData)
+      setResponse(result)
+    } catch (error) {
+      console.error(error)
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -29,30 +41,30 @@ export default function IndexPage() {
           Besedilo
         </p>
       </div>
-      {/* <form className="flex gap-4">
-        <Textarea />
-      <div className="flex gap-4">
-        <Button>Upload</Button>
-      </div>
-      </form> */}
-      <Label htmlFor="message-2">Your Message</Label>
-      <form action={handleFormSubmit} >
-        <div className="flex gap-4">
-          <Textarea name="inputText" placeholder="Post your text here" id="message-2"  />
 
+      <form onSubmit={handleFormSubmit}>
+        <div className="flex gap-4 pb-8 md:py-4">
+          <Label htmlFor="message-2">Your Message</Label>
+          <Textarea
+            name="inputText"
+            placeholder="Post your text here"
+            id="message-2"
+          />
         </div>
         <div className="flex gap-4 pb-8 md:py-4">
-
-        <Button type="submit">Submit</Button>
-      </div>
+          <Button type="submit" disabled={loading}>
+            {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            {loading ? "Loading..." : "Submit"}
+          </Button>
+        </div>
       </form>
+
       {response !== "" && (
         <div>
           <h2>Response:</h2>
           <p>{response}</p>
         </div>
       )}
-      
     </section>
   )
 }
