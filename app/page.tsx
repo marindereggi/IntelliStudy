@@ -1,50 +1,47 @@
 "use client"
 
 import { FormEvent, useState } from "react"
-import { Loader2 } from "lucide-react"
+import { Link, Loader2 } from "lucide-react"
 
-import { Button } from "@/components/ui/button"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-
-import { handleSubmit } from "./api"
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion"
+import { Button, buttonVariants } from "@/components/ui/button"
+import { Label } from "@/components/ui/label"
+import { Textarea } from "@/components/ui/textarea"
+
+import { handleSubmit } from "./api"
 
 interface FaqItem {
-  vprasanje: string;
-  odgovor: string;
+  vprasanje: string
+  odgovor: string
 }
 
 interface FaqData {
-  vprasanja: FaqItem[];
+  vprasanja: FaqItem[]
 }
 
 export default function IndexPage() {
   const [response, setResponse] = useState("")
   const [loading, setLoading] = useState(false)
 
-
   function FaqPage() {
-    const resp: FaqData=JSON.parse(response);
+    const resp: FaqData = JSON.parse(response)
     return (
       <section className="container grid items-center gap-6 pb-8 pt-6 md:py-10">
         <Accordion type="single" collapsible>
           {resp.vprasanja.map((item, index) => (
             <AccordionItem key={index} value={`item-${index}`}>
               <AccordionTrigger>{item.vprasanje}</AccordionTrigger>
-              <AccordionContent>
-                {item.odgovor}
-              </AccordionContent>
+              <AccordionContent>{item.odgovor}</AccordionContent>
             </AccordionItem>
           ))}
         </Accordion>
       </section>
-    );
+    )
   }
 
   async function handleFormSubmit(event: FormEvent<HTMLFormElement>) {
@@ -61,6 +58,15 @@ export default function IndexPage() {
     } finally {
       setLoading(false)
     }
+  }
+
+  function getCSV() {
+    const resp: FaqData = JSON.parse(response)
+    var csv = ""
+    resp.vprasanja.forEach(
+      (item, index) => (csv += `"${item.vprasanje}","${item.odgovor}"\n`)
+    )
+    return csv
   }
 
   return (
@@ -86,7 +92,7 @@ export default function IndexPage() {
           />
         </div>
         <div className="flex gap-4 pb-8 md:py-4">
-          <Button type="submit" disabled={loading}>
+          <Button type="submit" disabled={loading} className={buttonVariants({ size: "lg" })}>
             {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             {loading ? "Loading..." : "Submit"}
           </Button>
@@ -96,8 +102,15 @@ export default function IndexPage() {
       {response !== "" && (
         <div>
           <h2>Response:</h2>
-          <p>
-          {FaqPage()}</p>
+          <p>{FaqPage()}</p>
+          <a
+            href={"data:text/csv;charset=utf-8," + encodeURI(getCSV())}
+            target="_blank"
+            download="faq.csv"
+            className={buttonVariants({ size: "lg" })}
+          >
+            Download CSV
+          </a>
         </div>
       )}
     </section>
