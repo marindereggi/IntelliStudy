@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
-
+import { Label } from "@/components/ui/label"
 export default function IndexPage() {
   async function handleSubmit(data: FormData) {
     "use server"
@@ -26,10 +26,14 @@ export default function IndexPage() {
         <Button>Upload</Button>
       </div>
       </form> */}
-      <form action={handleSubmit}>
-        <Textarea name="inputText" />
-        <Button type="submit">Submit</Button>
+      <Label htmlFor="message-2">Your Message</Label>
+      <form action={handleSubmit} className="flex gap-4">
+        <Textarea name="inputText" placeholder="Post your text here" id="message-2"  />
       </form>
+      <div className="flex gap-4">
+
+        <Button type="submit">Submit</Button>
+      </div>
     </section>
   )
 }
