@@ -8,10 +8,44 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 
 import { handleSubmit } from "./api"
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
+
+interface FaqItem {
+  vprasanje: string;
+  odgovor: string;
+}
+
+interface FaqData {
+  vprasanja: FaqItem[];
+}
 
 export default function IndexPage() {
   const [response, setResponse] = useState("")
   const [loading, setLoading] = useState(false)
+
+
+  function FaqPage() {
+    const resp: FaqData=JSON.parse(response);
+    return (
+      <section className="container grid items-center gap-6 pb-8 pt-6 md:py-10">
+        <Accordion type="single" collapsible>
+          {resp.vprasanja.map((item, index) => (
+            <AccordionItem key={index} value={`item-${index}`}>
+              <AccordionTrigger>{item.vprasanje}</AccordionTrigger>
+              <AccordionContent>
+                {item.odgovor}
+              </AccordionContent>
+            </AccordionItem>
+          ))}
+        </Accordion>
+      </section>
+    );
+  }
 
   async function handleFormSubmit(event: FormEvent<HTMLFormElement>) {
     console.log(typeof event)
@@ -62,7 +96,8 @@ export default function IndexPage() {
       {response !== "" && (
         <div>
           <h2>Response:</h2>
-          <p>{response}</p>
+          <p>
+          {FaqPage()}</p>
         </div>
       )}
     </section>
