@@ -1,12 +1,13 @@
-import Link from "next/link"
-
-import { siteConfig } from "@/config/site"
-import { buttonVariants } from "@/components/ui/button"
-import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
-import { Loader2 } from "lucide-react"
+import { Textarea } from "@/components/ui/textarea"
 
 export default function IndexPage() {
+  async function handleSubmit(data: FormData) {
+    "use server"
+    console.log(data)
+    // ...
+  }
+
   return (
     <section className="container grid items-center gap-6 pb-8 pt-6 md:py-10">
       <div className="flex max-w-[980px] flex-col items-start gap-2">
@@ -19,15 +20,16 @@ export default function IndexPage() {
           Besedilo
         </p>
       </div>
-      <div className="flex gap-4">
+      {/* <form className="flex gap-4">
         <Textarea />
-      </div>
       <div className="flex gap-4">
-        
-        <Button >
-          Upload
-        </Button>
+        <Button>Upload</Button>
       </div>
+      </form> */}
+      <form action={handleSubmit}>
+        <Textarea name="inputText" />
+        <Button type="submit">Submit</Button>
+      </form>
     </section>
   )
 }
