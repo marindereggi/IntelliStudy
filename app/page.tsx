@@ -3,6 +3,8 @@ import Link from "next/link"
 import { siteConfig } from "@/config/site"
 import { buttonVariants } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
+import { Button } from "@/components/ui/button"
+import { Loader2 } from "lucide-react"
 
 export default function IndexPage() {
   return (
@@ -19,6 +21,12 @@ export default function IndexPage() {
       </div>
       <div className="flex gap-4">
         <Textarea />
+      </div>
+      <div className="flex gap-4">
+        
+        <Button >
+          Upload
+        </Button>
       </div>
     </section>
   )
