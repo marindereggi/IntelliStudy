@@ -27,13 +27,17 @@ export default function IndexPage() {
       </div>
       </form> */}
       <Label htmlFor="message-2">Your Message</Label>
-      <form action={handleSubmit} className="flex gap-4">
-        <Textarea name="inputText" placeholder="Post your text here" id="message-2"  />
-      </form>
-      <div className="flex gap-4">
+      <form action={handleSubmit} >
+        <div className="flex gap-4">
+          <Textarea name="inputText" placeholder="Post your text here" id="message-2"  />
+
+        </div>
+        <div className="flex gap-4 pb-8 md:py-4">
 
         <Button type="submit">Submit</Button>
       </div>
+      </form>
+      
     </section>
   )
 }
