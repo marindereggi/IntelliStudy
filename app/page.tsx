@@ -88,10 +88,16 @@ export default function IndexPage() {
       <section className="container grid items-center gap-6 pb-8 pt-6 md:py-10">
         <Accordion type="single" collapsible>
           {resp.vprasanja.map((item, index) => (
+            
             <AccordionItem key={index} value={`item-${index}`}>
-              <AccordionTrigger>{item.vprasanje}</AccordionTrigger>
+              <AccordionTrigger>
+              <Checkbox disabled={false} />
+              <span className="text-left">
+                {item.vprasanje}
+                
+                </span></AccordionTrigger>
               <AccordionContent>{item.odgovor}</AccordionContent>
-              <Checkbox  onCheckedChange={HandleonCheckedChange}/>
+              
             </AccordionItem>
           ))}
         </Accordion>
