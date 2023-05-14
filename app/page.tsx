@@ -243,7 +243,7 @@ export default function IndexPage() {
         </div>
       </form>
       <div className="flex gap-4 pb-8 md:py-4">
-      <Progress value={(progress/stVseh)*100} />
+      {/*<Progress value={(progress/stVseh)*100} />*/}
 
       </div>
 
@@ -287,7 +287,7 @@ export default function IndexPage() {
 
       {response !== "" && vrstaVprasanja=="A B C " && (
         <div>
-          <h2>Response:</h2>
+          <h2>A B C vprašanja:</h2>
 
           <p>
           <ABCDizpis />
