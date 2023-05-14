@@ -202,11 +202,11 @@ export default function IndexPage() {
           </SelectContent>
         </Select>
       </div>
-      <Label htmlFor="message-2">
-        Izberi vrsto vprašanj in vpiši besedilo:
-      </Label>
 
       <form onSubmit={handleFormSubmit}>
+        <Label htmlFor="message-2">
+          Izberi vrsto vprašanj in vpiši besedilo:
+        </Label>
         <div className="flex gap-4 pb-8 md:py-4">
           <Textarea
             name="inputText"
