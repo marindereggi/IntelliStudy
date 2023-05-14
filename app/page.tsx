@@ -98,13 +98,15 @@ export default function IndexPage() {
       </section>
     )
   }
-  function izpisiPovzetek() {
+
+  function IzpisiPovzetek() {
     return (
       <div className="flex gap-4 pb-8 md:py-4">
         {response}
       </div>
-    );
+    )
   }
+
   function ABCDizpis() {
     const resp: ABCData = JSON.parse(response);
     setstVseh(resp.vprasanja.length);
@@ -244,7 +246,8 @@ export default function IndexPage() {
         <div>
           <h2>Vprašanja in odgovori:</h2>
           <p>
-          {FaqPage()}</p>
+          <FaqPage />
+          {/*FaqPage()*/}</p>
          {/*<a
             href={"data:text/csv;charset=utf-8," + encodeURI(getCSV())}
             target="_blank"
@@ -262,7 +265,8 @@ export default function IndexPage() {
         <div>
           <h2>Povzetek:</h2>
           <p>
-          {izpisiPovzetek()}</p>
+          <IzpisiPovzetek />
+          {/*izpisiPovzetek()*/}</p>
           {/*<a
             href={"data:text/csv;charset=utf-8," + encodeURI(getCSV())}
             target="_blank"
@@ -280,7 +284,8 @@ export default function IndexPage() {
           <h2>Response:</h2>
 
           <p>
-          {ABCDizpis()}</p>
+          <ABCDizpis />
+          {/*ABCDizpis()*/}</p>
          {/*<a
             href={"data:text/csv;charset=utf-8," + encodeURI(getCSV())}
             target="_blank"
