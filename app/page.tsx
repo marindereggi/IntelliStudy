@@ -253,7 +253,7 @@ export default function IndexPage() {
 
       {response !== "" && vrstaVprasanja == "Povzetek" && (
         <div>
-          <h2>A B C vprašanja:</h2>
+          <h2>Povzetek: </h2>
 
           <p>
             <IzpisiPovzetek />
@@ -273,7 +273,7 @@ export default function IndexPage() {
 
       {response !== "" && vrstaVprasanja == "A B C " && (
         <div>
-          <h2>Response:</h2>
+          <h2>A B C vprašanja::</h2>
 
           <p>
             <ABCDizpis />
