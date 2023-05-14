@@ -88,8 +88,9 @@ export async function handleSubmitVprasanja(data: FormData, steviloVprasanj :num
     const inputText = data.get("inputText")
     console.log(inputText)
   
-    const prompt = `Za podani tekst sestavi 10 vprašanj z odgovori a b c, od katerih je eden pravilen.
-    Na koncu napiši še črko pravilnega odgovora. To pretvori v JSON file, ki je kot primer:
+    const prompt = `Za podani tekst sestavi 10 vprašanj z odgovori a b c, od katerih je eden pravilen in jih zapisi v JSON obliki.
+    JSON mora biti vedno v taki obliki kot je podan primer.
+    JSON file (NE napiši drugega besedila, vrni SAMO json), ki je kot primer:
     {
     "vprasanja": [
     {
@@ -112,8 +113,7 @@ export async function handleSubmitVprasanja(data: FormData, steviloVprasanj :num
     }
     ]
     } 
-    
-    Jeson mora biti vedno v taki obliki. Ne napiši dodatnega besedila. Vrni samo JSON.`
+    `
     const model = "gpt-3.5-turbo"
     const token = "qzWOoGbUqRQhc5i0kSkfmzkdFmcRwq"
   

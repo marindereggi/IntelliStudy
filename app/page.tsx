@@ -4,7 +4,7 @@
 import React,{ ChangeEvent, FormEvent, useState } from "react"
 import { Checkbox } from "@/components/ui/checkbox"
 
-
+import { Progress } from "@/components/ui/progress"
 
 import { Button, buttonVariants } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
@@ -63,7 +63,8 @@ export default function IndexPage() {
   const [loading, setLoading] = useState(false)
   const [AbcOdgovor, setAbcOdgovor] = useState("")
   const [steviloVprasanj, setSteviloVprasanj] = useState(10)
-
+  const [progress, setProgress] = useState(0)
+  const [stVseh, setstVseh] = useState(0)
 
   const [vrstaVprasanja, setVrstaVprasanja] = useState("Povzetek")
 
@@ -73,9 +74,16 @@ export default function IndexPage() {
     setAbcOdgovor(value);
 
   }
+  const HandleonCheckedChange = (value: boolean) =>{
+    console.log(value);
+
+    value ? setProgress(progress+1):setProgress(progress-1) ;
+
+  }
 
   function FaqPage() {
     const resp: FaqData = JSON.parse(response)
+    setstVseh(resp.vprasanja.length);
     return (
       <section className="container grid items-center gap-6 pb-8 pt-6 md:py-10">
         <Accordion type="single" collapsible>
@@ -83,7 +91,7 @@ export default function IndexPage() {
             <AccordionItem key={index} value={`item-${index}`}>
               <AccordionTrigger>{item.vprasanje}</AccordionTrigger>
               <AccordionContent>{item.odgovor}</AccordionContent>
-              <Checkbox />
+              <Checkbox  onCheckedChange={HandleonCheckedChange}/>
             </AccordionItem>
           ))}
         </Accordion>
@@ -99,6 +107,7 @@ export default function IndexPage() {
   }
   function ABCDizpis() {
     const resp: ABCData = JSON.parse(response);
+    setstVseh(resp.vprasanja.length);
     console.log(resp);
     return (
       <section className="container grid items-center gap-6 pb-8 pt-6 md:py-10">
@@ -121,6 +130,7 @@ export default function IndexPage() {
             </div>
           </div>
           {AbcOdgovor === `${item.pravilenOdgovor}${index}` ? <div>Pravilno.</div>: <div>Narobe.</div>}
+         
       </RadioGroup>
 
         ))}
@@ -134,6 +144,7 @@ export default function IndexPage() {
     event.preventDefault()
     const formData = new FormData(event.currentTarget)
     setLoading(true)
+    setProgress(0);
 
     try {
       let result;
@@ -189,7 +200,7 @@ export default function IndexPage() {
         </p>
       </div>
       <div className="flex gap-4 pb-8 md:py-4">
-        <Slider defaultValue={[33]} max={50} step={1} onValueChange={handleSlideChange}/>
+       {/* <Slider defaultValue={[33]} max={50} step={1} onValueChange={handleSlideChange}/>*/}
       </div>
       <div className="flex gap-4 pb-8 md:py-4">
       <Select onValueChange={handleSelectChange}>
@@ -223,6 +234,11 @@ export default function IndexPage() {
           </Button>
         </div>
       </form>
+      <div className="flex gap-4 pb-8 md:py-4">
+      <Progress value={(progress/stVseh)*100} />
+
+      </div>
+
 
       {response !== "" && vrstaVprasanja=="vprasanja" && (
         <div>
