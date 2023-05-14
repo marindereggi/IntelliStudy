@@ -101,15 +101,15 @@ export default function IndexPage() {
           <RadioGroup defaultValue="" onValueChange={HandleRadioChange}>
             <div key={index}>
               <div>{item.vprasanje}</div>
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-2 m-2">
                 <RadioGroupItem value={`a${index}`} id={`r${index}-a`} />
                 <Label htmlFor={`r${index}-a`}>{item.odgovor.a}</Label>
               </div>
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-2 m-2">
                 <RadioGroupItem value={`b${index}`} id={`r${index}-b`} />
                 <Label htmlFor={`r${index}-b`}>{item.odgovor.b}</Label>
               </div>
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-2 m-2">
                 <RadioGroupItem value={`c${index}`} id={`r${index}-c`} />
                 <Label htmlFor={`r${index}-c`}>{item.odgovor.c}</Label>
               </div>
