@@ -171,7 +171,7 @@ export default function IndexPage() {
           Pomočnik pri učenju
         </h1>
         <p className="max-w-[700px] text-lg text-muted-foreground sm:text-xl">
-          Besedilo
+IntelliStudy je spletna stran, ki nepregledno dolgo besedilo avtomatsko preoblikuje v zabavna in zanimiva vprašanja s podanimi odgovori, ABC vprašanja in dobro napisane povzetke. Tako bo učenje postalo bolj interaktivno in učinkovito. Z vami je lahko na vsakem koraku od osnovne šole pa do intervjuja za službo. Izberite katero vrsto vprašanj želite generirati in vpišite besedilo, ki ga želite uporabiti.
         </p>
       </div>
       <div className="flex gap-4 pb-8 md:py-2" id="sel">
