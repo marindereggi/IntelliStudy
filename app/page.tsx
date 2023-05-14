@@ -2,6 +2,7 @@
 
 
 import React,{ ChangeEvent, FormEvent, useState } from "react"
+import { Checkbox } from "@/components/ui/checkbox"
 
 
 
@@ -61,6 +62,7 @@ export default function IndexPage() {
   const [response, setResponse] = useState("")
   const [loading, setLoading] = useState(false)
   const [AbcOdgovor, setAbcOdgovor] = useState("")
+  const [steviloVprasanj, setSteviloVprasanj] = useState(10)
 
 
   const [vrstaVprasanja, setVrstaVprasanja] = useState("Povzetek")
@@ -81,6 +83,7 @@ export default function IndexPage() {
             <AccordionItem key={index} value={`item-${index}`}>
               <AccordionTrigger>{item.vprasanje}</AccordionTrigger>
               <AccordionContent>{item.odgovor}</AccordionContent>
+              <Checkbox />
             </AccordionItem>
           ))}
         </Accordion>
@@ -137,10 +140,10 @@ export default function IndexPage() {
       if(vrstaVprasanja === "Povzetek"){
         result = await handleSubmitPovzetek(formData);
       }else if(vrstaVprasanja === "vprasanja"){
-        result = await handleSubmitVprasanja(formData);
+        result = await handleSubmitVprasanja(formData,steviloVprasanj);
       }
       else if(vrstaVprasanja === "A B C "){
-        result = await handleSubmitABCD(formData);
+        result = await handleSubmitABCD(formData,steviloVprasanj);
       }
       setResponse(result)
     } catch (error) {
@@ -150,12 +153,17 @@ export default function IndexPage() {
     }
   }
   const handleSelectChange = (value: string) =>{
-    console.log("wlgbbgsgblbibhehwtbč");
     console.log(value);
 
     setVrstaVprasanja(value);
     setResponse("");
-    console.log(vrstaVprasanja);
+
+  }
+
+  const handleSlideChange = (value: number[]) =>{
+    console.log(value);
+
+    setSteviloVprasanj(value[0]);
 
   }
 
@@ -181,7 +189,7 @@ export default function IndexPage() {
         </p>
       </div>
       <div className="flex gap-4 pb-8 md:py-4">
-        <Slider defaultValue={[33]} max={100} step={1} />
+        <Slider defaultValue={[33]} max={50} step={1} onValueChange={handleSlideChange}/>
       </div>
       <div className="flex gap-4 pb-8 md:py-4">
       <Select onValueChange={handleSelectChange}>

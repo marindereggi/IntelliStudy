@@ -37,11 +37,11 @@ export async function handleSubmitPovzetek(data: FormData) {
   }
 }
 
-export async function handleSubmitVprasanja(data: FormData) {
+export async function handleSubmitVprasanja(data: FormData, steviloVprasanj :number) {
     const inputText = data.get("inputText")
     console.log(inputText)
   
-    const prompt = `Ko dobiš podano besedilo, oblikuj vprašanja in odgovore ter jih podaj v JSON obliki. Tvoj odgovor naj bo samo JSON oblika in čisto nič drugega. Če ne dobiš besedila, ne naredi nič. To je le primer strukture odgovora, po katerem se zgleduj.Vedno uporabi tako obliko. Vedno vrni json file brez ddatnega besedila. Torej počakaj na novo besedilo:
+    const prompt = `Ko dobiš podano besedilo, oblikuj vprašanja in odgovore ter jih podaj v JSON obliki. Podaj 10 vprasanj. Tvoj odgovor naj bo samo JSON oblika in čisto nič drugega. Če ne dobiš besedila, ne naredi nič. To je le primer strukture odgovora, po katerem se zgleduj.Vedno uporabi tako obliko. Vedno vrni json file brez ddatnega besedila. Torej počakaj na novo besedilo:
   {
     "vprasanja": [
       {
@@ -51,6 +51,8 @@ export async function handleSubmitVprasanja(data: FormData) {
     ]
   }
   Pripravi 10 vprašanj. Vse kar sledi, je besedilo, iz česar sestavi vprašanja: `
+
+  console.log(prompt)
     const model = "gpt-3.5-turbo"
     const token = "qzWOoGbUqRQhc5i0kSkfmzkdFmcRwq"
   
@@ -82,7 +84,7 @@ export async function handleSubmitVprasanja(data: FormData) {
     }
   }
 
-  export async function handleSubmitABCD(data: FormData) {
+  export async function handleSubmitABCD(data: FormData, steviloVprasanj :number) {
     const inputText = data.get("inputText")
     console.log(inputText)
   
