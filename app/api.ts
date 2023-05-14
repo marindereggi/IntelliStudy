@@ -5,7 +5,7 @@ export async function handleSubmitPovzetek(data: FormData) {
   console.log(inputText)
 
   const prompt = `Pripravi povzetek le iz podanega besedila, ki ni daljši od 10 stavkov, kjer povzameš najpomembnejše podatke iz teksta, ki je podan. `
-  const model = "gpt-3.5-turbo"
+  const model = "gpt-4"
   const token = "qzWOoGbUqRQhc5i0kSkfmzkdFmcRwq"
 
   try {
@@ -52,7 +52,7 @@ export async function handleSubmitVprasanja(data: FormData, steviloVprasanj :num
   Pripravi 10 vprašanj. Vse kar sledi, je besedilo, iz česar sestavi vprašanja: `
 
   console.log(prompt)
-    const model = "gpt-3.5-turbo"
+    const model = "gpt-4"
     const token = "qzWOoGbUqRQhc5i0kSkfmzkdFmcRwq"
   
     try {
@@ -113,7 +113,7 @@ export async function handleSubmitVprasanja(data: FormData, steviloVprasanj :num
     ]
     } 
     `
-    const model = "gpt-3.5-turbo"
+    const model = "gpt-4"
     const token = "qzWOoGbUqRQhc5i0kSkfmzkdFmcRwq"
   
     try {
