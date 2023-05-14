@@ -1,19 +1,6 @@
 "use client"
 
-
-import React,{ ChangeEvent, FormEvent, useState } from "react"
-import { Checkbox } from "@/components/ui/checkbox"
-
-import { Progress } from "@/components/ui/progress"
-
-import { Button, buttonVariants } from "@/components/ui/button"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-
-import { handleSubmitPovzetek, handleSubmitVprasanja, handleSubmitABCD } from "./api"
-import { Slider } from "@/components/ui/slider"
-
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import React, { ChangeEvent, FormEvent, useState } from "react"
 import { Link, Loader2 } from "lucide-react"
 
 import {
@@ -22,10 +9,11 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion"
-
-
-
-
+import { Button, buttonVariants } from "@/components/ui/button"
+import { Checkbox } from "@/components/ui/checkbox"
+import { Label } from "@/components/ui/label"
+import { Progress } from "@/components/ui/progress"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import {
   Select,
   SelectContent,
@@ -33,6 +21,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { Slider } from "@/components/ui/slider"
+import { Textarea } from "@/components/ui/textarea"
+
+import {
+  handleSubmitABCD,
+  handleSubmitPovzetek,
+  handleSubmitVprasanja,
+} from "./api"
 
 interface FaqItem {
   vprasanje: string
@@ -43,20 +39,19 @@ interface FaqData {
   vprasanja: FaqItem[]
 }
 interface ABCOdg {
-  a: string;
-  b: string;
-  c: string;
+  a: string
+  b: string
+  c: string
 }
 interface ABCItem {
-  vprasanje: string;
+  vprasanje: string
   odgovor: ABCOdg
-  pravilenOdgovor :string;
+  pravilenOdgovor: string
 }
 
 interface ABCData {
-  vprasanja: ABCItem[];
+  vprasanja: ABCItem[]
 }
-
 
 export default function IndexPage() {
   const [response, setResponse] = useState("")
@@ -68,36 +63,31 @@ export default function IndexPage() {
 
   const [vrstaVprasanja, setVrstaVprasanja] = useState("Povzetek")
 
-  const HandleRadioChange = (value: string) =>{
-    console.log(value);
+  const HandleRadioChange = (value: string) => {
+    console.log(value)
 
-    setAbcOdgovor(value);
-
+    setAbcOdgovor(value)
   }
-  const HandleonCheckedChange = (value: boolean) =>{
-    console.log(value);
+  const HandleonCheckedChange = (value: boolean) => {
+    console.log(value)
 
-    value ? setProgress(progress+1):setProgress(progress-1) ;
-
+    value ? setProgress(progress + 1) : setProgress(progress - 1)
   }
 
   function FaqPage() {
     const resp: FaqData = JSON.parse(response)
-    setstVseh(resp.vprasanja.length);
+    setstVseh(resp.vprasanja.length)
     return (
       <section className="container grid items-center gap-6 pb-8 pt-6 md:py-10">
         <Accordion type="single" collapsible>
           {resp.vprasanja.map((item, index) => (
-            
             <AccordionItem key={index} value={`item-${index}`}>
               <AccordionTrigger>
-              <Checkbox disabled={false} />
-              <span className="text-left">
-                {item.vprasanje}
-                
-                </span></AccordionTrigger>
+                <Checkbox disabled={false} />
+                <span className="ml-5">{item.vprasanje}</span>
+                <span className="ml-auto"></span>
+              </AccordionTrigger>
               <AccordionContent>{item.odgovor}</AccordionContent>
-              
             </AccordionItem>
           ))}
         </Accordion>
@@ -106,63 +96,58 @@ export default function IndexPage() {
   }
 
   function IzpisiPovzetek() {
-    return (
-      <div className="flex gap-4 pb-8 md:py-4">
-        {response}
-      </div>
-    )
+    return <div className="flex gap-4 pb-8 md:py-4">{response}</div>
   }
 
   function ABCDizpis() {
-    const resp: ABCData = JSON.parse(response);
-    setstVseh(resp.vprasanja.length);
-    console.log(resp);
+    const resp: ABCData = JSON.parse(response)
+    setstVseh(resp.vprasanja.length)
+    console.log(resp)
     return (
       <section className="container grid items-center gap-6 pb-8 pt-6 md:py-10">
         {resp.vprasanja.map((item, index) => (
-      <RadioGroup defaultValue="" onValueChange={HandleRadioChange}>
-
-          <div key={index}>
-            <div>{item.vprasanje}</div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value={`a${index}`} id={`r${index}-a`} />
-              <Label htmlFor={`r${index}-a`}>{item.odgovor.a}</Label>
+          <RadioGroup defaultValue="" onValueChange={HandleRadioChange}>
+            <div key={index}>
+              <div>{item.vprasanje}</div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value={`a${index}`} id={`r${index}-a`} />
+                <Label htmlFor={`r${index}-a`}>{item.odgovor.a}</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value={`b${index}`} id={`r${index}-b`} />
+                <Label htmlFor={`r${index}-b`}>{item.odgovor.b}</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value={`c${index}`} id={`r${index}-c`} />
+                <Label htmlFor={`r${index}-c`}>{item.odgovor.c}</Label>
+              </div>
             </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value={`b${index}`} id={`r${index}-b`} />
-              <Label htmlFor={`r${index}-b`}>{item.odgovor.b}</Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value={`c${index}`} id={`r${index}-c`} />
-              <Label htmlFor={`r${index}-c`}>{item.odgovor.c}</Label>
-            </div>
-          </div>
-          {AbcOdgovor === `${item.pravilenOdgovor}${index}` ? <div>Pravilno.</div>: <div>Narobe.</div>}
-         
-      </RadioGroup>
-
+            {AbcOdgovor === `${item.pravilenOdgovor}${index}` ? (
+              <div>Pravilno.</div>
+            ) : (
+              <div>Narobe.</div>
+            )}
+          </RadioGroup>
         ))}
-    </section>
-    );
+      </section>
+    )
   }
-  
 
   async function handleFormSubmit(event: FormEvent<HTMLFormElement>) {
     console.log(typeof event)
     event.preventDefault()
     const formData = new FormData(event.currentTarget)
     setLoading(true)
-    setProgress(0);
+    setProgress(0)
 
     try {
-      let result;
-      if(vrstaVprasanja === "Povzetek"){
-        result = await handleSubmitPovzetek(formData);
-      }else if(vrstaVprasanja === "vprasanja"){
-        result = await handleSubmitVprasanja(formData,steviloVprasanj);
-      }
-      else if(vrstaVprasanja === "A B C "){
-        result = await handleSubmitABCD(formData,steviloVprasanj);
+      let result
+      if (vrstaVprasanja === "Povzetek") {
+        result = await handleSubmitPovzetek(formData)
+      } else if (vrstaVprasanja === "vprasanja") {
+        result = await handleSubmitVprasanja(formData, steviloVprasanj)
+      } else if (vrstaVprasanja === "A B C ") {
+        result = await handleSubmitABCD(formData, steviloVprasanj)
       }
       setResponse(result)
     } catch (error) {
@@ -171,19 +156,17 @@ export default function IndexPage() {
       setLoading(false)
     }
   }
-  const handleSelectChange = (value: string) =>{
-    console.log(value);
+  const handleSelectChange = (value: string) => {
+    console.log(value)
 
-    setVrstaVprasanja(value);
-    setResponse("");
-
+    setVrstaVprasanja(value)
+    setResponse("")
   }
 
-  const handleSlideChange = (value: number[]) =>{
-    console.log(value);
+  const handleSlideChange = (value: number[]) => {
+    console.log(value)
 
-    setSteviloVprasanj(value[0]);
-
+    setSteviloVprasanj(value[0])
   }
 
   function getCSV() {
@@ -208,21 +191,20 @@ export default function IndexPage() {
         </p>
       </div>
       <div className="flex gap-4 pb-8 md:py-4">
-       {/* <Slider defaultValue={[33]} max={50} step={1} onValueChange={handleSlideChange}/>*/}
+        {/* <Slider defaultValue={[33]} max={50} step={1} onValueChange={handleSlideChange}/>*/}
       </div>
       <div className="flex gap-4 pb-8 md:py-4">
-      <Select onValueChange={handleSelectChange}>
-        <SelectTrigger className="w-[180px]">
-          <SelectValue placeholder="Vrsta vprašanj" />
-        </SelectTrigger>
-        <SelectContent  >
-          <SelectItem value="Povzetek">Povzetek</SelectItem>
-          <SelectItem value="vprasanja">Opisna vprašanja</SelectItem>
-          <SelectItem value="A B C ">A B C vprašanje</SelectItem>
-        </SelectContent>
-      </Select>
+        <Select onValueChange={handleSelectChange}>
+          <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder="Vrsta vprašanj" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="Povzetek">Povzetek</SelectItem>
+            <SelectItem value="vprasanja">Opisna vprašanja</SelectItem>
+            <SelectItem value="A B C ">A B C vprašanje</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
-
 
       <form onSubmit={handleFormSubmit}>
         <div className="flex gap-4 pb-8 md:py-4">
@@ -235,8 +217,11 @@ export default function IndexPage() {
         </div>
 
         <div className="flex gap-4 pb-8 md:py-4">
-          <Button type="submit" disabled={loading} className={buttonVariants({ size: "lg" })}>
-
+          <Button
+            type="submit"
+            disabled={loading}
+            className={buttonVariants({ size: "lg" })}
+          >
             {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             {loading ? "Loading..." : "Submit"}
           </Button>
@@ -247,32 +232,13 @@ export default function IndexPage() {
 
       </div>
 
-
-      {response !== "" && vrstaVprasanja=="vprasanja" && (
+      {response !== "" && vrstaVprasanja == "vprasanja" && (
         <div>
           <h2>Vprašanja in odgovori:</h2>
           <p>
-          <FaqPage />
-          {/*FaqPage()*/}</p>
-         {/*<a
-            href={"data:text/csv;charset=utf-8," + encodeURI(getCSV())}
-            target="_blank"
-            rel="noreferrer"
-            download="faq.csv"
-            className={buttonVariants({ size: "lg" })}
-          >
-            Download CSV
-          </a> */} 
-        </div>
-        
-      )}
-
-      {response !== "" && vrstaVprasanja=="Povzetek" && (
-        <div>
-          <h2>Povzetek:</h2>
-          <p>
-          <IzpisiPovzetek />
-          {/*izpisiPovzetek()*/}</p>
+            <FaqPage />
+            {/*FaqPage()*/}
+          </p>
           {/*<a
             href={"data:text/csv;charset=utf-8," + encodeURI(getCSV())}
             target="_blank"
@@ -281,18 +247,19 @@ export default function IndexPage() {
             className={buttonVariants({ size: "lg" })}
           >
             Download CSV
-          </a> */} 
+          </a> */}
         </div>
       )}
 
-      {response !== "" && vrstaVprasanja=="A B C " && (
+      {response !== "" && vrstaVprasanja == "Povzetek" && (
         <div>
           <h2>A B C vprašanja:</h2>
 
           <p>
-          <ABCDizpis />
-          {/*ABCDizpis()*/}</p>
-         {/*<a
+            <IzpisiPovzetek />
+            {/*izpisiPovzetek()*/}
+          </p>
+          {/*<a
             href={"data:text/csv;charset=utf-8," + encodeURI(getCSV())}
             target="_blank"
             rel="noreferrer"
@@ -300,8 +267,27 @@ export default function IndexPage() {
             className={buttonVariants({ size: "lg" })}
           >
             Download CSV
-          </a> */} 
-         
+          </a> */}
+        </div>
+      )}
+
+      {response !== "" && vrstaVprasanja == "A B C " && (
+        <div>
+          <h2>Response:</h2>
+
+          <p>
+            <ABCDizpis />
+            {/*ABCDizpis()*/}
+          </p>
+          {/*<a
+            href={"data:text/csv;charset=utf-8," + encodeURI(getCSV())}
+            target="_blank"
+            rel="noreferrer"
+            download="faq.csv"
+            className={buttonVariants({ size: "lg" })}
+          >
+            Download CSV
+          </a> */}
         </div>
       )}
     </section>
