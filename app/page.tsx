@@ -193,8 +193,10 @@ export default function IndexPage() {
       <div className="flex gap-4 pb-8 md:py-4">
         {/* <Slider defaultValue={[33]} max={50} step={1} onValueChange={handleSlideChange}/>*/}
       </div>
-      <div className="flex gap-4 pb-8 md:py-4">
-        <Select onValueChange={handleSelectChange}>
+      
+
+      <div className="flex gap-4 pb-8 md:py-2" id="sel">
+        <Select onValueChange={handleSelectChange} >
           <SelectTrigger className="w-[180px]">
             <SelectValue placeholder="Vrsta vprašanj" />
           </SelectTrigger>
@@ -205,10 +207,10 @@ export default function IndexPage() {
           </SelectContent>
         </Select>
       </div>
+      <Label htmlFor="message-2">Izberi vrsto vprašanj in vpiši besedilo:</Label>
 
       <form onSubmit={handleFormSubmit}>
         <div className="flex gap-4 pb-8 md:py-4">
-          <Label htmlFor="message-2">Your Message</Label>
           <Textarea
             name="inputText"
             className="h-72"
