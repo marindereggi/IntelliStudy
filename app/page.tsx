@@ -242,7 +242,7 @@ export default function IndexPage() {
             <FaqPage />
             {/*FaqPage()*/}
           </p>
-          {/*<a
+          <a
             href={"data:text/csv;charset=utf-8," + encodeURI(getCSV())}
             target="_blank"
             rel="noreferrer"
@@ -250,7 +250,7 @@ export default function IndexPage() {
             className={buttonVariants({ size: "lg" })}
           >
             Download CSV
-          </a> */}
+          </a>
         </div>
       )}
 
@@ -262,15 +262,15 @@ export default function IndexPage() {
             <IzpisiPovzetek />
             {/*izpisiPovzetek()*/}
           </p>
-          {/*<a
-            href={"data:text/csv;charset=utf-8," + encodeURI(getCSV())}
+          <a
+            href={"data:text/plain;charset=utf-8," + encodeURI(response)}
             target="_blank"
             rel="noreferrer"
-            download="faq.csv"
+            download="summary.txt"
             className={buttonVariants({ size: "lg" })}
           >
-            Download CSV
-          </a> */}
+            Download TXT
+          </a>
         </div>
       )}
 
