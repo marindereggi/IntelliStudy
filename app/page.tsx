@@ -211,6 +211,7 @@ export default function IndexPage() {
           <Label htmlFor="message-2">Your Message</Label>
           <Textarea
             name="inputText"
+            className="h-72"
             placeholder="Post your text here"
             id="message-2"
           />
