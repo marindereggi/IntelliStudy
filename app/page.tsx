@@ -198,20 +198,20 @@ export default function IndexPage() {
           <SelectContent>
             <SelectItem value="Povzetek">Povzetek</SelectItem>
             <SelectItem value="vprasanja">Opisna vprašanja</SelectItem>
-            <SelectItem value="A B C ">A B C vprašanje</SelectItem>
+            <SelectItem value="A B C ">A B C vprašanja</SelectItem>
           </SelectContent>
         </Select>
       </div>
 
       <form onSubmit={handleFormSubmit}>
         <Label htmlFor="message-2">
-          Izberi vrsto vprašanj in vpiši besedilo:
+          Izberi vrsto vprašanj in vpišite besedilo:
         </Label>
         <div className="flex gap-4 pb-8 md:py-4">
           <Textarea
             name="inputText"
             className="h-72"
-            placeholder="Post your text here"
+            placeholder="Vpišite vaše besedilo"
             id="message-2"
           />
         </div>
@@ -223,17 +223,16 @@ export default function IndexPage() {
             className={buttonVariants({ size: "lg" })}
           >
             {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            {loading ? "Loading..." : "Submit"}
+            {loading ? "Generiranje ..." : "Generiraj"}
           </Button>
         </div>
       </form>
-      <div className="flex gap-4 pb-8 md:py-4">
-        {/*<Progress value={(progress/stVseh)*100} />*/}
-      </div>
 
       {response !== "" && vrstaVprasanja == "vprasanja" && (
         <div>
-          <h2>Vprašanja in odgovori:</h2>
+          <h2 className="max-w-[700px] text-lg text-muted-foreground sm:text-xl">
+            Vprašanja in odgovori:
+          </h2>
           <p>
             <FaqPage />
             {/*FaqPage()*/}
@@ -245,14 +244,16 @@ export default function IndexPage() {
             download="faq.csv"
             className={buttonVariants({ size: "lg" })}
           >
-            Download CSV
+            Prenesi CSV
           </a>
         </div>
       )}
 
       {response !== "" && vrstaVprasanja == "Povzetek" && (
         <div>
-          <h2>Povzetek: </h2>
+          <h2 className="max-w-[700px] text-lg text-muted-foreground sm:text-xl">
+            Povzetek:
+          </h2>
 
           <p>
             <IzpisiPovzetek />
@@ -265,14 +266,16 @@ export default function IndexPage() {
             download="summary.txt"
             className={buttonVariants({ size: "lg" })}
           >
-            Download TXT
+            Prenesi TXT
           </a>
         </div>
       )}
 
       {response !== "" && vrstaVprasanja == "A B C " && (
         <div>
-          <h2>A B C vprašanja::</h2>
+          <h2 className="max-w-[700px] text-lg text-muted-foreground sm:text-xl">
+            A B C vprašanja:
+          </h2>
 
           <p>
             <ABCDizpis />
