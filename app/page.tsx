@@ -12,7 +12,6 @@ import {
 import { Button, buttonVariants } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
-import { Progress } from "@/components/ui/progress"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import {
   Select,
@@ -21,7 +20,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { Slider } from "@/components/ui/slider"
 import { Textarea } from "@/components/ui/textarea"
 
 import {
@@ -64,15 +62,10 @@ export default function IndexPage() {
   const [vrstaVprasanja, setVrstaVprasanja] = useState("Povzetek")
 
   const HandleRadioChange = (value: string) => {
-    console.log(value)
 
     setAbcOdgovor(value)
   }
-  const HandleonCheckedChange = (value: boolean) => {
-    console.log(value)
-
-    value ? setProgress(progress + 1) : setProgress(progress - 1)
-  }
+ 
 
   function FaqPage() {
     const resp: FaqData = JSON.parse(response)
@@ -102,7 +95,6 @@ export default function IndexPage() {
   function ABCDizpis() {
     const resp: ABCData = JSON.parse(response)
     setstVseh(resp.vprasanja.length)
-    console.log(resp)
     return (
       <section className="container grid items-center gap-6 pb-8 pt-6 md:py-10">
         {resp.vprasanja.map((item, index) => (
@@ -134,7 +126,6 @@ export default function IndexPage() {
   }
 
   async function handleFormSubmit(event: FormEvent<HTMLFormElement>) {
-    console.log(typeof event)
     event.preventDefault()
     const formData = new FormData(event.currentTarget)
     setLoading(true)
@@ -157,17 +148,12 @@ export default function IndexPage() {
     }
   }
   const handleSelectChange = (value: string) => {
-    console.log(value)
 
     setVrstaVprasanja(value)
     setResponse("")
   }
 
-  const handleSlideChange = (value: number[]) => {
-    console.log(value)
-
-    setSteviloVprasanj(value[0])
-  }
+  
 
   function getCSV() {
     const resp: FaqData = JSON.parse(response)
@@ -235,7 +221,6 @@ export default function IndexPage() {
           </h2>
           <p>
             <FaqPage />
-            {/*FaqPage()*/}
           </p>
           <a
             href={"data:text/csv;charset=utf-8," + encodeURI(getCSV())}
@@ -257,7 +242,6 @@ export default function IndexPage() {
 
           <p>
             <IzpisiPovzetek />
-            {/*izpisiPovzetek()*/}
           </p>
           <a
             href={"data:text/plain;charset=utf-8," + encodeURI(response)}
@@ -279,17 +263,8 @@ export default function IndexPage() {
 
           <p>
             <ABCDizpis />
-            {/*ABCDizpis()*/}
           </p>
-          {/*<a
-            href={"data:text/csv;charset=utf-8," + encodeURI(getCSV())}
-            target="_blank"
-            rel="noreferrer"
-            download="faq.csv"
-            className={buttonVariants({ size: "lg" })}
-          >
-            Download CSV
-          </a> */}
+          
         </div>
       )}
     </section>

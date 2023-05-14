@@ -1,4 +1,3 @@
-// api.ts
 "use server"
 
 export async function handleSubmitPovzetek(data: FormData) {
