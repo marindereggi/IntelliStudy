@@ -134,9 +134,9 @@ export default function IndexPage() {
       if (vrstaVprasanja === "Povzetek") {
         result = await handleSubmitPovzetek(formData)
       } else if (vrstaVprasanja === "vprasanja") {
-        result = await handleSubmitVprasanja(formData, steviloVprasanj)
+        result = await handleSubmitVprasanja(formData)
       } else if (vrstaVprasanja === "A B C ") {
-        result = await handleSubmitABCD(formData, steviloVprasanj)
+        result = await handleSubmitABCD(formData)
       }
       setResponse(result)
     } catch (error) {

@@ -1,46 +1,50 @@
 "use server"
 
-export async function handleSubmitPovzetek(data: FormData) {
-  const inputText = data.get("inputText")
+export async function apiCall(inputText: FormDataEntryValue, prompt: string) {
   console.log(inputText)
 
-  const prompt = `Pripravi povzetek le iz podanega besedila, ki ni daljši od 10 stavkov, kjer povzameš najpomembnejše podatke iz teksta, ki je podan. `
   const model = "gpt-4"
   const token = "qzWOoGbUqRQhc5i0kSkfmzkdFmcRwq"
 
-  try {
-    const response = await fetch(
-      "https://openai-api.meetings.bio/api/openai/chat/completions",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          model,
-          messages: [{ role: "user", content: prompt + inputText }],
-        }),
+  return fetch("https://openai-api.meetings.bio/api/openai/chat/completions", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      model,
+      messages: [{ role: "user", content: prompt + inputText }],
+    }),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Request failed")
       }
-    )
-
-    if (!response.ok) {
-      throw new Error("Request failed")
-    }
-
-    const data = await response.json()
-    console.log(data.choices[0].message.content)
-    return data.choices[0].message.content
-  } catch (error) {
-    console.error(error)
-  }
+      return response.json()
+    })
+    .then((data) => {
+      console.log(data.choices[0].message.content)
+      return data.choices[0].message.content
+    })
+    .catch((error) => {
+      console.error(error)
+    })
 }
 
-export async function handleSubmitVprasanja(data: FormData, steviloVprasanj :number) {
-    const inputText = data.get("inputText")
-    console.log(inputText)
-  
-    const prompt = `Ko dobiš podano besedilo, oblikuj vprašanja in odgovore ter jih podaj v JSON obliki. Podaj 10 vprasanj. Tvoj odgovor naj bo samo JSON oblika in čisto nič drugega. Če ne dobiš besedila, ne naredi nič. To je le primer strukture odgovora, po katerem se zgleduj.Vedno uporabi tako obliko. Vedno vrni json file brez ddatnega besedila. Torej počakaj na novo besedilo:
+export async function handleSubmitPovzetek(data: FormData) {
+  const inputText = data.get("inputText")
+  if (!inputText) return null
+
+  const prompt = `Pripravi povzetek le iz podanega besedila, ki ni daljši od 10 stavkov, kjer povzameš najpomembnejše podatke iz teksta, ki je podan. `
+  return await apiCall(inputText, prompt)
+}
+
+export async function handleSubmitVprasanja(data: FormData) {
+  const inputText = data.get("inputText")
+  if (!inputText) return null
+
+  const prompt = `Ko dobiš podano besedilo, oblikuj vprašanja in odgovore ter jih podaj v JSON obliki. Podaj 10 vprasanj. Tvoj odgovor naj bo samo JSON oblika in čisto nič drugega. Če ne dobiš besedila, ne naredi nič. To je le primer strukture odgovora, po katerem se zgleduj.Vedno uporabi tako obliko. Vedno vrni json file brez ddatnega besedila. Torej počakaj na novo besedilo:
   {
     "vprasanja": [
       {
@@ -51,95 +55,39 @@ export async function handleSubmitVprasanja(data: FormData, steviloVprasanj :num
   }
   Pripravi 10 vprašanj. Vse kar sledi, je besedilo, iz česar sestavi vprašanja: `
 
-  console.log(prompt)
-    const model = "gpt-4"
-    const token = "qzWOoGbUqRQhc5i0kSkfmzkdFmcRwq"
-  
-    try {
-      const response = await fetch(
-        "https://openai-api.meetings.bio/api/openai/chat/completions",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            model,
-            messages: [{ role: "user", content: prompt + inputText }],
-          }),
-        }
-      )
-  
-      if (!response.ok) {
-        throw new Error("Request failed")
-      }
-  
-      const data = await response.json()
-      console.log(data.choices[0].message.content)
-      return data.choices[0].message.content
-    } catch (error) {
-      console.error(error)
-    }
-  }
+  return await apiCall(inputText, prompt)
+}
 
-  export async function handleSubmitABCD(data: FormData, steviloVprasanj :number) {
-    const inputText = data.get("inputText")
-    console.log(inputText)
-  
-    const prompt = `Za podani tekst sestavi 10 vprašanj z odgovori a b c, od katerih je eden pravilen in jih zapisi v JSON obliki.
+export async function handleSubmitABCD(data: FormData) {
+  const inputText = data.get("inputText")
+  if (!inputText) return null
+
+  const prompt = `Za podani tekst sestavi 10 vprašanj z odgovori a b c, od katerih je eden pravilen in jih zapisi v JSON obliki.
     JSON mora biti vedno v taki obliki kot je podan primer.
     JSON file (NE napiši drugega besedila, vrni SAMO json), ki je kot primer:
     {
-    "vprasanja": [
-    {
-    "vprasanje": "Kako se znanstveno imenuje konj?",
-    "odgovor": {
-    "a": "Equus caballus",
-    "b": "Equus asinus",
-    "c": "Equus zebra"
-    },
-    "pravilenOdgovor": "a"
-    },
-    {
-    "vprasanje": "Kako se imenuje samcu domačega konja?",
-    "odgovor": {
-    "a": "Žrebec",
-    "b": "Kobila",
-    "c": "Žrebe"
-    },
-    "pravilenOdgovor": "a"
-    }
-    ]
-    } 
-    `
-    const model = "gpt-4"
-    const token = "qzWOoGbUqRQhc5i0kSkfmzkdFmcRwq"
-  
-    try {
-      const response = await fetch(
-        "https://openai-api.meetings.bio/api/openai/chat/completions",
+      "vprasanja": [
         {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
+          "vprasanje": "Kako se znanstveno imenuje konj?",
+          "odgovor": {
+            "a": "Equus caballus",
+            "b": "Equus asinus",
+            "c": "Equus zebra"
           },
-          body: JSON.stringify({
-            model,
-            messages: [{ role: "user", content: prompt + inputText }],
-          }),
+          "pravilenOdgovor": "a"
+        },
+        {
+          "vprasanje": "Kako se imenuje samcu domačega konja?",
+          "odgovor": {
+            "a": "Žrebec",
+            "b": "Kobila",
+            "c": "Žrebe"
+          },
+          "pravilenOdgovor": "a"
         }
-      )
-  
-      if (!response.ok) {
-        throw new Error("Request failed")
-      }
-  
-      const data = await response.json()
-      console.log(data.choices[0].message.content)
-      return data.choices[0].message.content
-    } catch (error) {
-      console.error(error)
+      ]
     }
-  }
+    Sledi besedilo, iz katerega sestavi vprašanja: 
+    `
+  return await apiCall(inputText, prompt)
+}
