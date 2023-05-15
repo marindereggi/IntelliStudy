@@ -3,10 +3,10 @@
 export async function apiCall(inputText: FormDataEntryValue, prompt: string) {
   console.log(inputText)
 
-  const model = "gpt-4"
-  const token = "qzWOoGbUqRQhc5i0kSkfmzkdFmcRwq"
+  const model = "gpt-3.5-turbo"
+  const token = process.env.OPENAI_API_KEY
 
-  return fetch("https://openai-api.meetings.bio/api/openai/chat/completions", {
+  return fetch("https://api.openai.com/v1/chat/completions", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
