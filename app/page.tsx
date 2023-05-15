@@ -22,11 +22,7 @@ import {
 } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
 
-import {
-  handleSubmitABCD,
-  handleSubmitPovzetek,
-  handleSubmitVprasanja,
-} from "./api"
+import api, { APIrequest } from "../api/api"
 
 interface FaqItem {
   vprasanje: string
@@ -124,26 +120,26 @@ export default function IndexPage() {
   }
 
   async function handleFormSubmit(event: FormEvent<HTMLFormElement>) {
+    const inputText = new FormData(event.currentTarget).get("inputText")
+    if (!inputText) return
     event.preventDefault()
-    const formData = new FormData(event.currentTarget)
     setLoading(true)
     setProgress(0)
 
-    try {
-      let result
-      if (vrstaVprasanja === "Povzetek") {
-        result = await handleSubmitPovzetek(formData)
-      } else if (vrstaVprasanja === "vprasanja") {
-        result = await handleSubmitVprasanja(formData)
-      } else if (vrstaVprasanja === "A B C ") {
-        result = await handleSubmitABCD(formData)
-      }
-      setResponse(result)
-    } catch (error) {
-      console.error(error)
-    } finally {
-      setLoading(false)
-    }
+    await fetch("../api/api", {
+      method: "POST",
+      body: JSON.stringify({
+        vrstaVprasanja: vrstaVprasanja,
+        inputText: inputText,
+      } as APIrequest),
+    })
+      .then((result) => {
+        if (!result.ok) throw new Error("Error")
+        return result.text()
+      })
+      .then((data) => setResponse(data))
+      .catch((error) => console.error(error))
+      .finally(() => setLoading(false))
   }
   const handleSelectChange = (value: string) => {
     setVrstaVprasanja(value)
