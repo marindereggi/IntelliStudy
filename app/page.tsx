@@ -22,7 +22,7 @@ import {
 } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
 
-import api, { APIrequest } from "../api/api"
+import { APIrequest } from "../api/generate"
 
 interface FaqItem {
   vprasanje: string
@@ -126,8 +126,11 @@ export default function IndexPage() {
     setLoading(true)
     setProgress(0)
 
-    await fetch("../api/api", {
+    await fetch("../api/generate", {
       method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify({
         vrstaVprasanja: vrstaVprasanja,
         inputText: inputText,
@@ -135,9 +138,27 @@ export default function IndexPage() {
     })
       .then((result) => {
         if (!result.ok) throw new Error("Error")
-        return result.text()
+        return result.body
       })
-      .then((data) => setResponse(data))
+      .then(async (data) => {
+        if (!data) return
+        const reader = data.getReader()
+        const decoder = new TextDecoder()
+        let done = false
+
+        let recieved = ""
+
+        while (!done) {
+          const { value, done: doneReading } = await reader.read()
+          done = doneReading
+          const chunkValue = decoder.decode(value)
+          recieved += chunkValue
+          if (vrstaVprasanja == "Povzetek") setResponse(recieved)
+        }
+        if (vrstaVprasanja != "Povzetek") recieved = "{ " + recieved
+        setResponse(recieved)
+        setResponse(recieved)
+      })
       .catch((error) => console.error(error))
       .finally(() => setLoading(false))
   }

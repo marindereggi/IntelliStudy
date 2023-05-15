@@ -1,3 +1,5 @@
+import { OpenAIStream } from "../lib/OpenAIStream"
+
 export interface APIrequest {
   vrstaVprasanja: string
   inputText: string
@@ -10,10 +12,23 @@ export const config = {
 export default async function api(req: Request) {
   const { vrstaVprasanja, inputText } = (await req.json()) as APIrequest
 
-  return new Response(await apiCall(inputText, getPrompt(vrstaVprasanja)), {
+  const prompt = getPrompt(vrstaVprasanja)
+  const stream = await OpenAIStream(payload(inputText, prompt))
+
+  return new Response(stream, {
     headers: {
-      "content-type": "application/json",
+      "Content-Type": "text/plain",
+      "Cache-Control": "no-cache",
+      Connection: "keep-alive",
     },
+  })
+}
+
+function payload(inputText: string, prompt: string) {
+  return JSON.stringify({
+    model: "gpt-3.5-turbo",
+    messages: [{ role: "user", content: prompt + inputText }],
+    stream: true,
   })
 }
 
@@ -62,33 +77,4 @@ function getPrompt(tip: string) {
       Sledi besedilo, iz katerega sestavi vprašanja: 
       `
   }
-}
-
-async function apiCall(inputText: string, prompt: string) {
-  console.log(inputText)
-
-  const model = "gpt-3.5-turbo"
-  const token = process.env.OPENAI_API_KEY
-
-  return fetch("https://api.openai.com/v1/chat/completions", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify({
-      model,
-      messages: [{ role: "user", content: prompt + inputText }],
-    }),
-  })
-    .then((response) => {
-      if (!response.ok) throw new Error("Request failed")
-
-      return response.json()
-    })
-    .then((data) => {
-      console.log(data.choices[0].message.content)
-      return data.choices[0].message.content
-    })
-    .catch((error) => console.error(error))
 }
